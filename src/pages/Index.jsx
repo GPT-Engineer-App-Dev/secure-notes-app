@@ -70,6 +70,9 @@ const Index = () => {
             onChange={(e) => setNotes(e.target.value)}
             mt={4}
           />
+          <Text mt={4} p={4} bg="gray.100" borderRadius="md">
+            {notes}
+          </Text>
         </Box>
       ) : (
         <Box>
