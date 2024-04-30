@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Button, Input, Text, VStack, useToast } from '@chakra-ui/react';
+import { Box, Button, Input, Text, VStack, useToast, Textarea } from '@chakra-ui/react';
 
 const Index = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
+  const [notes, setNotes] = useState('');
   const toast = useToast();
 
   useEffect(() => {
@@ -63,6 +64,12 @@ const Index = () => {
         <Box>
           <Text>Welcome, {user.user_metadata.email}</Text>
           <Button onClick={handleLogout}>Logout</Button>
+          <Textarea
+            placeholder="Your notes here..."
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+            mt={4}
+          />
         </Box>
       ) : (
         <Box>
