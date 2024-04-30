@@ -62,7 +62,7 @@ const Index = () => {
     <VStack spacing={4} align="stretch">
       {user ? (
         <Box>
-          <Text>Welcome, {user.user_metadata.email}</Text>
+          <Text>Welcome, {user && user.user_metadata ? user.user_metadata.email : 'Guest'}</Text>
           <Button onClick={handleLogout}>Logout</Button>
           <Textarea
             placeholder="Your notes here..."
