@@ -5,9 +5,8 @@ const Index = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
-  const [notes, setNotes] = useState('');
-  const [appName, setAppName] = useState('');
-  const [appDescription, setAppDescription] = useState('');
+  const [notes, setNotes] = useState([]);
+  const [currentNote, setCurrentNote] = useState('');
   const toast = useToast();
 
   useEffect(() => {
@@ -25,15 +24,34 @@ const Index = () => {
     // Logout logic here
   };
 
-  const saveApp = () => {
-    // Save app logic here
+  const addNote = () => {
+    setNotes([...notes, currentNote]);
+    setCurrentNote('');
     toast({
-      title: 'App Created',
-      description: "Your new app has been created successfully.",
+      title: 'Note Added',
+      description: "Your note has been added successfully.",
       status: 'success',
       duration: 9000,
       isClosable: true,
     });
+  };
+
+  const deleteNote = (index) => {
+    const newNotes = notes.filter((_, i) => i !== index);
+    setNotes(newNotes);
+    toast({
+      title: 'Note Deleted',
+      description: "Your note has been deleted successfully.",
+      status: 'error',
+      duration: 9000,
+      isClosable: true,
+    });
+  };
+
+  const editNote = (index, value) => {
+    const newNotes = [...notes];
+    newNotes[index] = value;
+    setNotes(newNotes);
   };
 
   return (
@@ -42,22 +60,24 @@ const Index = () => {
         <Box>
           <Text>Welcome, {user && user.user_metadata ? user.user_metadata.email : 'Guest'}</Text>
           <Button onClick={handleLogout}>Logout</Button>
-          <Textarea
-            placeholder="Your notes here..."
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
-            mt={4}
-          />
-          <Text mt={4} p={4} bg="gray.100" borderRadius="md">
-            {notes}
-          </Text>
           <FormControl mt={4}>
-            <FormLabel>App Name</FormLabel>
-            <Input placeholder="Enter app name" value={appName} onChange={(e) => setAppName(e.target.value)} />
-            <FormLabel mt={2}>App Description</FormLabel>
-            <Textarea placeholder="Enter app description" value={appDescription} onChange={(e) => setAppDescription(e.target.value)} />
-            <Button mt={4} onClick={saveApp}>Create App</Button>
+            <FormLabel>Add a Note</FormLabel>
+            <Textarea
+              placeholder="Type your note here..."
+              value={currentNote}
+              onChange={(e) => setCurrentNote(e.target.value)}
+            />
+            <Button mt={4} onClick={addNote}>Add Note</Button>
           </FormControl>
+          {notes.map((note, index) => (
+            <Box key={index} p={4} bg="gray.100" borderRadius="md" mt={4}>
+              <Textarea
+                value={note}
+                onChange={(e) => editNote(index, e.target.value)}
+              />
+              <Button mt={2} colorScheme="red" onClick={() => deleteNote(index)}>Delete Note</Button>
+            </Box>
+          ))}
         </Box>
       ) : (
         <Box>
