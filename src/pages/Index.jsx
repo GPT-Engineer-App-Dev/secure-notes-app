@@ -25,15 +25,17 @@ const Index = () => {
   };
 
   const addNote = () => {
-    setNotes([...notes, currentNote]);
-    setCurrentNote('');
-    toast({
-      title: 'Note Added',
-      description: "Your note has been added successfully.",
-      status: 'success',
-      duration: 9000,
-      isClosable: true,
-    });
+    if (currentNote.trim() !== '') {
+      setNotes([...notes, currentNote.trim()]);
+      setCurrentNote('');
+      toast({
+        title: 'Note Added',
+        description: "Your note has been added successfully.",
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+      });
+    }
   };
 
   const deleteNote = (index) => {
@@ -50,8 +52,18 @@ const Index = () => {
 
   const editNote = (index, value) => {
     const newNotes = [...notes];
-    newNotes[index] = value;
+    newNotes[index] = value.trim();
     setNotes(newNotes);
+  };
+
+  const saveNote = (index) => {
+    toast({
+      title: 'Note Saved',
+      description: "Your note has been saved successfully.",
+      status: 'info',
+      duration: 5000,
+      isClosable: true,
+    });
   };
 
   return (
@@ -75,7 +87,8 @@ const Index = () => {
                 value={note}
                 onChange={(e) => editNote(index, e.target.value)}
               />
-              <Button mt={2} colorScheme="red" onClick={() => deleteNote(index)}>Delete Note</Button>
+              <Button mt={2} colorScheme="teal" onClick={() => saveNote(index)}>Save</Button>
+              <Button mt={2} colorScheme="red" onClick={() => deleteNote(index)}>Delete</Button>
             </Box>
           ))}
         </Box>
